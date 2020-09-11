@@ -2,12 +2,13 @@ import java.util.*;
 
 
 class Path {
-    int to, val;
+    int from, to, val;
 
     public Path() {
     }
 
-    public Path(int to, int val) {
+    public Path(int from, int to, int val) {
+        this.from = from;
         this.to = to;
         this.val = val;
     }
@@ -59,8 +60,8 @@ public class Dijkstra {
                 if (a[v] == null) {
                     a[v] = new ArrayList<>();
                 }
-                a[u].add(new Path(v, w));
-                a[v].add(new Path(u, w));
+                a[u].add(new Path(u, v, w));
+                a[v].add(new Path(v, u, w));
             }
             dij();
 
@@ -68,15 +69,11 @@ public class Dijkstra {
     }
 
     private static void dij() {
-        vis[1] = true;
+        //vis[1] = true;
         dis[1] = 0;
         int len = a[1].size();
         int temp = 0x3f3f3f;
         int pos = 1;
-        for (int i = 0; i < len; i++) {
-            Path path = a[1].get(i);
-            dis[path.to] = path.val;
-        }
         //堆优化版本
         PriorityQueue<Point> pq = new PriorityQueue<>(new Comparator<Point>() {
             @Override
@@ -94,32 +91,32 @@ public class Dijkstra {
             int l = a[p.position].size();
             for (int i = 0; i < l; i++) {
                 Path path = a[p.position].get(i);
-                if (dis[path.to] > dis[pos] + path.val) {
-                    dis[path.to] = dis[pos] + path.val;
+                if (dis[path.to] > dis[path.from] + path.val) {
+                    dis[path.to] = dis[path.from] + path.val;
                     pq.add(new Point(path.to, dis[path.to]));
                 }
             }
         }
 
-        //普通版本
-        for (int i = 1; i <= n - 1; i++) {
-            temp = 0x3f3f3f;
-            for (int j = 1; j <= n; j++) {
-                if (!vis[j] && dis[j] < temp) {
-                    temp = dis[j];
-                    pos = j;
-                }
-            }
-            vis[pos] = true;
-
-            len = a[pos].size();
-            for (int j = 0; j < len; j++) {
-                Path path = a[pos].get(j);
-                if (!vis[path.to] && dis[path.to] > dis[pos] + path.val) {
-                    dis[path.to] = dis[pos] + path.val;
-                }
-            }
-        }
+//        //普通版本
+//        for (int i = 1; i <= n - 1; i++) {
+//            temp = 0x3f3f3f;
+//            for (int j = 1; j <= n; j++) {
+//                if (!vis[j] && dis[j] < temp) {
+//                    temp = dis[j];
+//                    pos = j;
+//                }
+//            }
+//            vis[pos] = true;
+//
+//            len = a[pos].size();
+//            for (int j = 0; j < len; j++) {
+//                Path path = a[pos].get(j);
+//                if (!vis[path.to] && dis[path.to] > dis[pos] + path.val) {
+//                    dis[path.to] = dis[pos] + path.val;
+//                }
+//            }
+//        }
 
 
         if (dis[n] < 0x3f3f3f3f)
