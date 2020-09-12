@@ -29,6 +29,7 @@ public class Heap {
 
     private static void swiftdown(int i) {
         int t = i;
+
         while (true) {
             if (i * 2 + 1 <= n && a[i * 2 + 1] > a[i]) {
                 t = 2 * i + 1;
