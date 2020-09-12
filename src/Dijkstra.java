@@ -86,7 +86,7 @@ public class Dijkstra {
 
         while (!pq.isEmpty()) {
             Point p = pq.poll();
-            if (vis[p.position]) continue;
+            if (vis[p.position]) continue;  //这一行代码为了降低时间复杂度
             vis[p.position] = true;
             int l = a[p.position].size();
             for (int i = 0; i < l; i++) {
